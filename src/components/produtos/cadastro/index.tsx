@@ -5,6 +5,7 @@ import { Input } from 'components/common/input'
 import { Alert } from 'components/common/message'
 import { Layout } from 'components/layout'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useState } from 'react'
 import * as yup from 'yup'
 
@@ -183,7 +184,9 @@ export const CadastroProdutos: React.FC = () => {
                         </button>
                     </div>
                     <div className="control">
-                        <button className="button is-link is-light">Voltar</button>
+                        <Link href="/consultas/produtos">
+                            <button className="button is-link is-light">Voltar</button>
+                        </Link>
                     </div>
                 </div>
             </Layout>
