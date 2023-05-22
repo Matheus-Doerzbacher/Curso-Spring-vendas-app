@@ -3,16 +3,26 @@ import Head from "next/head"
 import Link from "next/link"
 import { TabelaProdutos } from "./tabela"
 import { Produto } from "app/models/produtos"
+import useSWR from 'swr'
+import { httpClient } from "app/http"
+import { AxiosResponse } from "axios"
+import { Loader } from "components/common/loader"
+
 
 
 export const ListagemProdutos: React.FC = () => {
 
-    const produtos: Produto[] = [
-        { idProduto:'1', codigo: 'HGT150', nome: 'TESTE', preco: 250.00 },
-        { idProduto:'1', codigo: 'HGT150', nome: 'TESTE', preco: 250.00 },
-        { idProduto:'1', codigo: 'HGT150', nome: 'TESTE', preco: 250.00 },
-        { idProduto:'1', codigo: 'HGT150', nome: 'TESTE', preco: 250.00 }
-    ]
+    const { data: result, error } = useSWR<AxiosResponse<Produto[]>>
+                    ('/api/produtos', url => httpClient.get(url))
+
+    const editar = (produto: Produto) => {
+        console.log(produto)
+    }
+
+    const deletar = (produto: Produto) => {
+        console.log(produto)
+    }
+
 
     return(
         <>
@@ -24,8 +34,9 @@ export const ListagemProdutos: React.FC = () => {
                 <Link href="/cadastros/produtos">
                     <button className="button is-link">Novo produto</button>
                 </Link>
-                <br />
-                <TabelaProdutos produtos={produtos}/>
+                <br /><br />
+                <TabelaProdutos onEdit={editar} onDelete={deletar} produtos={result?.data || []}/>
+                <Loader mostrarLoader={!result}/>
             </Layout>
         </>
     )
