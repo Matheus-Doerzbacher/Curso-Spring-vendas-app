@@ -1,4 +1,5 @@
 import { Produto } from "app/models/produtos"
+import { useState } from "react"
 
 interface TabelaProdutosProps {
     produtos: Array<Produto>
@@ -19,14 +20,14 @@ export const TabelaProdutos: React.FC<TabelaProdutosProps> = ({ produtos, onEdit
                 </tr>
             </thead>
             <tbody>
-                { 
-                    produtos.map( produto => (
-                        <ProdutoRow onEdit={onEdit} 
-                            onDelete={onDelete} 
-                            key={produto.idProduto} 
+                {
+                    produtos.map(produto => (
+                        <ProdutoRow onEdit={onEdit}
+                            onDelete={onDelete}
+                            key={produto.idProduto}
                             produto={produto}
                         />)
-                    ) 
+                    )
                 }
             </tbody>
         </table>
@@ -40,6 +41,20 @@ interface ProdutoRowProps {
 }
 
 const ProdutoRow: React.FC<ProdutoRowProps> = ({ produto, onEdit, onDelete }) => {
+
+    const [deletenado, setDeletando] = useState<boolean>(false)
+
+    const onDeleteClick = (produto: Produto) => {
+        if (deletenado) {
+            onDelete(produto)
+            setDeletando(false)
+        } else {
+            setDeletando(true)
+        }
+    }
+
+    const cancelaDelete = () => setDeletando(false)
+
     return (
         <tr>
             <td>{produto.idProduto}</td>
@@ -47,15 +62,25 @@ const ProdutoRow: React.FC<ProdutoRowProps> = ({ produto, onEdit, onDelete }) =>
             <td>{produto.nome}</td>
             <td>{produto.preco}</td>
             <td>
-                <button className="button is-success is-rounded is-small" 
+                {!deletenado &&
+                    <button className="button is-success is-rounded is-small"
                         onClick={e => onEdit(produto)}
-                        style={{ marginRight: '15px' }}>
-                    Editar
-                </button>
+                        style={{ marginRight: '15px', width:'70px'}}>
+                        Editar
+                    </button>
+                }
                 <button className="button is-danger is-rounded is-small"
-                        onClick={e => onDelete(produto)}>
-                    Deletar
+                    onClick={e => onDeleteClick(produto)}
+                    style={{width:'70px'}}>
+                    {deletenado ? "Confirmar" : "Deletar"}
                 </button>
+                {deletenado &&
+                    <button className="button is-rounded is-small"
+                        onClick={cancelaDelete}
+                        style={{ marginLeft: '15px', width:'70px'}}>
+                        Cancelar
+                    </button>
+                }
             </td>
         </tr>
     )

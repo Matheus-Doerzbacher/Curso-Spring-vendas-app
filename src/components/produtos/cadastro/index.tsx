@@ -1,15 +1,16 @@
 import { Produto } from 'app/models/produtos'
 import { useProdutoService } from 'app/services'
-import { converterEmBigDecimal } from 'app/util/money'
+import { converterEmBigDecimal, formatReal } from 'app/util/money'
 import { Input } from 'components/common/input'
 import { Alert } from 'components/common/message'
 import { Layout } from 'components/layout'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 import * as yup from 'yup'
 
-const msgCampoObrigatorio = "Campo Obrigatório" 
+const msgCampoObrigatorio = "Campo Obrigatório"
 
 const validationSchema = yup.object().shape({
     // trim() tira os espaços em branco no texto
@@ -19,11 +20,11 @@ const validationSchema = yup.object().shape({
     descricao: yup.string().trim().required(msgCampoObrigatorio)
 })
 
-interface FormErros{
-    codigo?:string
-    preco?:string
-    nome?:string
-    descricao?:string
+interface FormErros {
+    codigo?: string
+    preco?: string
+    nome?: string
+    descricao?: string
 }
 
 export const CadastroProdutos: React.FC = () => {
@@ -38,6 +39,23 @@ export const CadastroProdutos: React.FC = () => {
     const [dataCadastro, setDataCadastro] = useState<string>()
     const [messages, setMessages] = useState<Array<Alert>>([])
     const [errors, setErrors] = useState<FormErros>({})
+
+    const router = useRouter()
+    const { id } = router.query
+
+    useEffect(() => {
+        if (id){    
+            service.carregarProduto(id).then(produtoEncontrado => {
+                console.log(produtoEncontrado)
+                setIdProduto(produtoEncontrado.idProduto)
+                setCodigo(produtoEncontrado.codigo ?? '')
+                setNome(produtoEncontrado.nome ?? '')
+                setDescricao(produtoEncontrado.descricao ?? '')
+                setPreco(formatReal(`${produtoEncontrado.preco}`) ?? '')
+                setDataCadastro(produtoEncontrado.dataCadastro ?? '')
+            })
+        }
+    }, [id])
 
     const submit = () => {
         const produto: Produto = {
