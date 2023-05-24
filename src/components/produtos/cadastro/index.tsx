@@ -1,7 +1,7 @@
 import { Produto } from 'app/models/produtos'
 import { useProdutoService } from 'app/services'
 import { converterEmBigDecimal, formatReal } from 'app/util/money'
-import { Input } from 'components/common/input'
+import { Input, InputMoney } from 'components/common/input'
 import { Alert } from 'components/common/message'
 import { Layout } from 'components/layout'
 import Head from 'next/head'
@@ -107,9 +107,8 @@ export const CadastroProdutos: React.FC = () => {
                         <Input
                             label='Id do Produto:'
                             id='inputId'
-                            classname='input'
                             value={idProduto}
-                            disable
+                            disabled
                         />
                     </div>
 
@@ -118,9 +117,8 @@ export const CadastroProdutos: React.FC = () => {
                             label='Data de Cadastro:'
                             id='inputDataCadastro'
                             type='text'
-                            classname='input'
                             value={dataCadastro}
-                            disable
+                            disabled
                         />
                     </div>
                 </div>
@@ -137,27 +135,24 @@ export const CadastroProdutos: React.FC = () => {
             <Layout titulo='Cadastro de Produtos' mensagens={messages}>
                 {renderizarId()}
                 <div className="columns">
-                    <div className="field column">
+                    <div className="field column is-half">
                         <Input
                             label='Código: *'
                             id='inputCodigo'
-                            classname='input'
                             placeholder='Digite o código do produto'
                             value={codigo}
-                            onChange={setCodigo}
+                            onChange={e => setCodigo(e.target.value)}
                             error={errors.codigo}
                         />
                     </div>
 
-                    <div className="field column ">
-                        <Input
+                    <div className="field column is-half">
+                        <InputMoney
                             label='Preço: *'
                             id='inputPreco'
-                            classname='input'
                             placeholder='Digite o preço do produto'
                             value={preco}
-                            onChange={setPreco}
-                            currency
+                            onChange={e => setPreco(e.target.value)}
                             maxLength={16}
                             error={errors.preco}
                         />
@@ -170,10 +165,9 @@ export const CadastroProdutos: React.FC = () => {
                             label='Nome: *'
                             id='inputNome'
                             type='text'
-                            classname='input'
                             placeholder='Digite o nome do produto'
                             value={nome}
-                            onChange={setNome}
+                            onChange={e => setNome(e.target.value)}
                             error={errors.nome}
                         />
                     </div>
@@ -181,17 +175,17 @@ export const CadastroProdutos: React.FC = () => {
 
                 <div className="columns">
                     <div className="field column is-full">
-                        <Input
-                            istextarea
-                            label='Descrição: *'
+                        <label className='label' htmlFor='inputDescricao'>Descrição: *</label>
+                        <textarea
                             id='inputDescricao'
-                            type='text'
-                            classname='textarea'
+                            className='textarea'
                             placeholder='Digite a descrição detalhada do produto'
                             value={descricao}
-                            onChange={setDescricao}
-                            error={errors.descricao}
-                        />
+                            onChange={e => setDescricao(e.target.value)}
+                        ></textarea>
+                        {errors.descricao && 
+                            <p className='help is-danger'>{errors.descricao}</p>
+                        }
                     </div>
                 </div>
 
