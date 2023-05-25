@@ -2,16 +2,33 @@ import { Layout } from "components/layout"
 import { ClienteForm } from "./form"
 import { useState } from 'react'
 import { Cliente } from "app/models/clientes"
+import { useClienteService } from "app/services/cliente.service"
+import { Alert } from "components/common/message"
 
 export const CadastroCliente: React.FC = () => {
 
     const [cliente, setCLiente] = useState<Cliente>({})
+    const [messages, setMessages] = useState<Array<Alert>>([])
+    const service = useClienteService()
 
     const handleSubmit = (cliente: Cliente) => {
-        console.log(cliente)
+        if (cliente.idCliente){
+            service.atualizar(cliente).then( response => {
+                setMessages([{
+                    tipo: "success", texto: "Cliente atualizado com sucesso!"
+                }])
+            })
+        } else {
+            service.salvar(cliente).then(clienteSalvo => {
+                setCLiente(clienteSalvo)
+                setMessages([{
+                    tipo: "success", texto: "Produto salvo com sucesso!"
+                }])
+            })
+        }
     }
     return(
-        <Layout titulo="Clientes">
+        <Layout titulo="Clientes" mensagens={messages}>
             <ClienteForm cliente={cliente} onSubmit={handleSubmit}/>
         </Layout>
     )

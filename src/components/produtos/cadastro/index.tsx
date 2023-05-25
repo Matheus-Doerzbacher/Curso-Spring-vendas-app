@@ -8,7 +8,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import * as yup from 'yup'
+import * as yup from 'Yup'
 
 const msgCampoObrigatorio = "Campo Obrigatório"
 
@@ -87,16 +87,17 @@ export const CadastroProdutos: React.FC = () => {
                         }])
                     })
             }
-        }).catch(err => {
+        }).catch((err) => {
             const field = err.path
             const message = err.message
+
+            console.log(err.path)
+            console.log(err)
 
             setErrors({
                 [field]: message
             })
         })
-
-
     }
 
     const renderizarId = () => {

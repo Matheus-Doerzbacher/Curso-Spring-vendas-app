@@ -1,6 +1,7 @@
 import { Cliente } from "app/models/clientes"
 import { Input, InputCPF, InputDate, InputPhone } from "components/common/input"
 import { useFormik } from "formik"
+import { validationScheme } from "./validationSchema"
 
 interface CLienteFormProps {
     cliente: Cliente
@@ -17,14 +18,15 @@ const formScheme: Cliente = {
     email:'',
     dataCadastro:''
 }
-
+ 
 export const ClienteForm: React.FC<CLienteFormProps> = ({cliente, onSubmit}) => {
 
     const formik = useFormik<Cliente>({
         initialValues: { ... formScheme, ...cliente},
         onSubmit,
+        enableReinitialize: true,
+        validationSchema: validationScheme
     })
-
 
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -57,7 +59,8 @@ export const ClienteForm: React.FC<CLienteFormProps> = ({cliente, onSubmit}) => 
                         columnClasses="is-full"
                         autoComplete="off"
                         onChange={formik.handleChange}
-                        value={formik.values.nome} 
+                        value={formik.values.nome}
+                        error={formik.errors.nome} 
                 />
             </div>
 
@@ -70,6 +73,7 @@ export const ClienteForm: React.FC<CLienteFormProps> = ({cliente, onSubmit}) => 
                         autoComplete="off"
                         onChange={formik.handleChange} 
                         value={formik.values.cpf} 
+                        error={formik.errors.cpf} 
                 />
                 <InputDate  id="nascimento" 
                         name="nascimento"
@@ -77,7 +81,8 @@ export const ClienteForm: React.FC<CLienteFormProps> = ({cliente, onSubmit}) => 
                         columnClasses="is-half"
                         autoComplete="off"
                         onChange={formik.handleChange} 
-                        value={formik.values.nascimento} 
+                        value={formik.values.nascimento}
+                        error={formik.errors.nascimento}  
                 />
             </div>
 
@@ -89,7 +94,8 @@ export const ClienteForm: React.FC<CLienteFormProps> = ({cliente, onSubmit}) => 
                         columnClasses="is-full"
                         autoComplete="off"
                         onChange={formik.handleChange} 
-                        value={formik.values.endereco} 
+                        value={formik.values.endereco}
+                        error={formik.errors.endereco}  
                 />
             </div>
 
@@ -101,7 +107,8 @@ export const ClienteForm: React.FC<CLienteFormProps> = ({cliente, onSubmit}) => 
                         columnClasses="is-half"
                         autoComplete="off"
                         onChange={formik.handleChange} 
-                        value={formik.values.email} 
+                        value={formik.values.email}
+                        error={formik.errors.email} 
                 />
                 <InputPhone  id="telefone" 
                         name="telefone"
@@ -109,7 +116,8 @@ export const ClienteForm: React.FC<CLienteFormProps> = ({cliente, onSubmit}) => 
                         columnClasses="is-half"
                         autoComplete="off"
                         onChange={formik.handleChange} 
-                        value={formik.values.telefone} 
+                        value={formik.values.telefone}
+                        error={formik.errors.telefone} 
                 />
             </div>
             <div className="field is-grouped">

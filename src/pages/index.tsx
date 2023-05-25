@@ -9,7 +9,7 @@ export default function Home() {
         <title>Vendas App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout/>
+      <Layout titulo='Página principal'/>
     </div>
   )
 }

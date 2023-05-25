@@ -16,14 +16,14 @@ export const useProdutoService = () => {
         await httpClient.put<Produto>(url, produto)
     }
 
-    const carregarProduto = async (id) : Promise<Produto> => {
-        const url: string = `${resourceURL}/${id}`
+    const carregarProduto = async (idProduto) : Promise<Produto> => {
+        const url: string = `${resourceURL}/${idProduto}`
         const response: AxiosResponse<Produto> = await httpClient.get(url)
         return response.data
     }
 
-    const deletar = async (id): Promise<void> =>{
-        const url: string = `${resourceURL}/${id}`
+    const deletar = async (idProduto): Promise<void> =>{
+        const url: string = `${resourceURL}/${idProduto}`
         await httpClient.delete(url)
     }
 
