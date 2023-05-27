@@ -2,6 +2,7 @@ import { Cliente } from "app/models/clientes"
 import { Input, InputCPF, InputDate, InputPhone } from "components/common/input"
 import { useFormik } from "formik"
 import { validationScheme } from "./validationSchema"
+import Link from "next/link"
 
 interface CLienteFormProps {
     cliente: Cliente
@@ -126,11 +127,11 @@ export const ClienteForm: React.FC<CLienteFormProps> = ({cliente, onSubmit}) => 
                             {formik.values.idCliente ? 'Atulaizar' : 'Salvar'}
                         </button>
                     </div>
-                    {/* <div className="control">
-                        <Link href="/consultas/produtos">
+                    <div className="control">
+                        <Link href="/consultas/clientes">
                             <button className="button is-link is-light">Voltar</button>
                         </Link>
-                    </div> */}
+                    </div>
                 </div>
         </form>
     )
